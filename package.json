@@ -1,0 +1,24 @@
+{
+  "name": "frontend-gitlab",
+  "version": "1.0.0",
+  "description": "GitLab api node module that does not require server-side dependencies.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jsmapr1/frontend-gitlab.git"
+  },
+  "keywords": [
+    "gitlab",
+    "git",
+    "fetch"
+  ],
+  "author": "Joe Morgan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jsmapr1/frontend-gitlab/issues"
+  },
+  "homepage": "https://github.com/jsmapr1/frontend-gitlab#readme"
+}
