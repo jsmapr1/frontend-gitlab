@@ -1,10 +1,11 @@
-import Issues from './requests/Issues';
 import fnargs from 'fn-args';
 
-const gitlab = (auth) => {
+export const gitlab = (auth) => {
     return function(request) {
-      console.log(fnargs(request));
+      return request.call(this,auth)();
     }
 }
+
+
 
 export default gitlab;
