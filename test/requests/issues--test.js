@@ -32,6 +32,7 @@ describe('issues', () => {
           'PRIVATE-TOKEN': 'abc123'
         }
       })
+      .persist()
       .get('/issues')
       .reply(200, [issue])
   });
@@ -40,8 +41,15 @@ describe('issues', () => {
     nock.cleanAll()
   });
 
-  it('will work', () => {
-    return getIssues({url:'http://foo.gitlab.com', token:'abc123'}).then(json => {
+  it('will return issues', () => {
+    return getIssues({url:'http://foo.gitlab.com', token:'abc123'})().then(json => {
+      expect(json).toEqual([issue])
+    });
+  })
+
+  it('can take authentication separate', () => {
+    const issues = getIssues({url:'http://foo.gitlab.com', token:'abc123'});
+    return issues().then(json => {
       expect(json).toEqual([issue])
     });
   })

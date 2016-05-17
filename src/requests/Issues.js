@@ -6,8 +6,10 @@ function validate(url,token) {
 }
 export const  getIssues = ({url, token}) => {
   validate(url,token);
-  return fetch(url+'/api/v3/issues', generateRequestParameters(token))
-    .then(response => {
-        return response.json();
-    })
+  return () => {
+    return fetch(url+'/api/v3/issues', generateRequestParameters(token))
+      .then(response => {
+          return response.json();
+      })
+  }
 }
