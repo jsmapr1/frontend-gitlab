@@ -2,10 +2,10 @@
   "name": "frontend-gitlab",
   "version": "1.0.0",
   "description": "GitLab api node module that does not require server-side dependencies.",
-  "main": "lib/index.js",
+  "main": "index.js",
   "scripts": {
     "test": "mocha test/**/*-test.js --compilers js:babel-core/register",
-    "build": "babel src -d lib",
+    "build": "babel src -d ./",
     "prepublish": "npm run build"
   },
   "repository": {
