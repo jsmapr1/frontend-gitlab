@@ -1,3 +1,5 @@
+import {parametize} from '../index'
+
 function generateRequestParameters(token) {
   return {headers: new Headers({'PRIVATE-TOKEN': token})}
 };
@@ -19,7 +21,8 @@ export const getIssues = ({url, token}) => {
 export const  getProjectIssues = ({url, token}) => {
   validate(url,token);
   return (project, options) => {
-    return fetch(url + '/api/v3/projects/0/issues?state=closed', generateRequestParameters(token))
+
+    return fetch(url + `/api/v3/projects/${project}/issues${parametize(options)}`, generateRequestParameters(token))
       .then(response => {
           return response.json();
       })

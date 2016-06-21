@@ -87,7 +87,9 @@ describe('issues', () => {
 
 
   it('can return issues for a project', () => {
-    return getProjectIssues({url:'http://foo.gitlab.com', token:'abc123'})(0, {})
+    return getProjectIssues({url:'http://foo.gitlab.com', token:'abc123'})(0, {
+      'state':'closed'
+    })
       .then(json => {
         expect(json).toEqual([issue2])
       });

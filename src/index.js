@@ -6,6 +6,12 @@ export const gitlab = (auth) => {
     }
 }
 
-
+export const parametize = (options) => {
+  if(!options)
+    return '';
+  return '?' + Object.keys(options).map((option) => {
+      return option + '=' + options[option];
+    }).join('&');
+}
 
 export default gitlab;

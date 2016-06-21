@@ -1,7 +1,7 @@
 import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
-import gitlab from '../../src/index';
+import {parametize, gitlab} from '../../src/index';
 import {getIssues} from '../../src/requests/Issues';
 
 describe('main', () => {
@@ -48,5 +48,17 @@ describe('main', () => {
       expect(json).toEqual([issue])
     });
   })
+})
 
+describe('utility functions', () => {
+  it('will turn options into parameters', () => {
+    expect(parametize({
+      'a':'b',
+      'c':'d'
+    })).toEqual('?a=b&c=d');
+  })
+
+  it('will ignore empty parameters', () => {
+    expect(parametize(null)).toEqual('');
+  });
 })
