@@ -87,11 +87,12 @@ describe('issues', () => {
 
 
   it('can return issues for a project', () => {
-    return getProjectIssues({url:'http://foo.gitlab.com', token:'abc123'})(0, {
+    let projectIssues = getProjectIssues({url:'http://foo.gitlab.com', token:'abc123'});
+    return projectIssues(0, {
       'state':'closed'
     })
-      .then(json => {
-        expect(json).toEqual([issue2])
-      });
+    .then(json => {
+      expect(json).toEqual([issue2])
+    });
   })
 })
