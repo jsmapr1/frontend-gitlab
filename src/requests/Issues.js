@@ -8,6 +8,11 @@ function validate(url,token) {
   if(!token || !url) throw new Error("Please include Token");
 }
 
+const postMethod = () => {
+  return {
+    method: "POST"
+  }
+}
 export const getIssues = ({url, token}) => {
   validate(url,token);
   return () => {
@@ -21,8 +26,22 @@ export const getIssues = ({url, token}) => {
 export const  getProjectIssues = ({url, token}) => {
   validate(url,token);
   return (project, options) => {
-
     return fetch(url + `/api/v3/projects/${project}/issues${parametize(options)}`, generateRequestParameters(token))
+      .then(response => {
+          return response.json();
+      })
+  }
+}
+
+export const postProjectIssue = ({url, token}) => {
+  validate(url,token);
+  return (project, options) => {
+    return fetch(url + `/api/v3/projects/${project}/issues${parametize(options)}`,
+        Object.assign(
+          generateRequestParameters(token),
+          postMethod()
+        )
+      )
       .then(response => {
           return response.json();
       })
