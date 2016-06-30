@@ -61,4 +61,10 @@ describe('utility functions', () => {
   it('will ignore empty parameters', () => {
     expect(parametize(null)).toEqual('');
   });
+
+  it('will url encode parameters', () => {
+    expect(parametize({
+      title:'New Issue'
+    })).toEqual('?title=New%20Issue');
+  })
 })

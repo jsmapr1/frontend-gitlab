@@ -7,10 +7,11 @@ export const gitlab = (auth) => {
 }
 
 export const parametize = (options) => {
-  if(!options)
+  if(!options) {
     return '';
+  }
   return '?' + Object.keys(options).map((option) => {
-      return option + '=' + options[option];
+      return option + '=' + encodeURI(options[option]);
     }).join('&');
 }
 
