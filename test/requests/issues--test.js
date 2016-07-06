@@ -1,6 +1,6 @@
 import expect from 'expect';
 import nock from 'nock';
-import {getIssues, getProjectIssues, postProjectIssue} from '../../src/requests/Issues';
+import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from '../../src/requests/Issues';
 
 describe('issues', () => {
   const issue =  {
@@ -49,31 +49,38 @@ describe('issues', () => {
     "subscribed": true,
   }
 
-  const response = {
-   "project_id" : 1,
-   "id" : 2,
-   "created_at" : "2016-01-07T12:44:33.959Z",
-   "iid" : 2,
-   "title" : "New Issue",
-   "state" : "opened",
-   "assignee" : 'jsmapr1',
-   "labels" : [
-      "iteration-1"
-   ],
-   "author" : {
-      "name" : "Joe Morgan",
-      "avatar_url" : null,
-      "state" : "active",
-      "web_url" : "https://foo.gitlab/u/jsmapr1",
-      "id" : 1,
-      "username" : "jsmapr1"
-   },
-   "description" : null,
-   "updated_at" : "2016-01-07T12:44:33.959Z",
-   "milestone" : null,
-   "subscribed" : true,
-   "user_notes_count": 0
+  const newIssueResponse = {
+    "id": 5,
+    "iid": 2,
+    "project_id": 0,
+    "title": "New Issue",
+    "description": null,
+    "state": "opened",
+    "created_at": "2016-07-06T09:30:53.064-05:00",
+    "updated_at": "2016-07-06T09:30:53.064-05:00",
+    "labels": [
+        "iteration-1"
+      ],
+    "milestone": null,
+    "assignee": {
+        "name": "jsmapr1",
+        "username": "jsmapr1",
+        "id": 1,
+        "state": "active"
+      },
+    "author": {
+        "name": "jsmapr1",
+        "username": "jsmapr1",
+        "id": 1,
+        "state": "active"
+      },
+    "subscribed": true
   }
+
+  const editIssueResponse = Object.assign({}, newIssueResponse, {
+    "state": "closed",
+    "updated_at":"2016-07-06T09:35:53.064-05:00"
+  })
 
   before(() => {
     nock('http://foo.gitlab.com/api/v3', {
@@ -99,7 +106,15 @@ describe('issues', () => {
         }
       })
       .post('/projects/0/issues?title=New%20Issue&labels=iteration-1&assignee_id=1')
-      .reply(201, response)
+      .reply(201, newIssueResponse)
+
+    nock('http://foo.gitlab.com/api/v3', {
+        reqheaders: {
+          'PRIVATE-TOKEN': 'abc123'
+        }
+      })
+      .put('/projects/0/issues/5?state_event=close')
+      .reply(201, editIssueResponse)
   });
 
   after (() => {
@@ -137,7 +152,17 @@ describe('issues', () => {
       labels: 'iteration-1',
       assignee_id: 1
     }).then(json => {
-      expect(json).toEqual(response);
+      expect(json).toEqual(newIssueResponse);
+    })
+  })
+
+
+  it('can edit an existing issue', () => {
+    const issues = editProjectIssue({url:'http://foo.gitlab.com', token:'abc123'});
+    return issues(0, 5, {
+      state_event: 'close'
+    }).then(json => {
+      expect(json).toEqual(editIssueResponse);
     })
   })
 })

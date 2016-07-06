@@ -13,6 +13,13 @@ const postMethod = () => {
     method: "POST"
   }
 }
+
+const putMethod = () => {
+  return {
+    method: "PUT"
+  }
+}
+
 export const getIssues = ({url, token}) => {
   validate(url,token);
   return () => {
@@ -40,6 +47,21 @@ export const postProjectIssue = ({url, token}) => {
         Object.assign(
           generateRequestParameters(token),
           postMethod()
+        )
+      )
+      .then(response => {
+          return response.json();
+      })
+  }
+}
+
+export const editProjectIssue = ({url, token}) => {
+  validate(url,token);
+  return (project, issueId, options) => {
+    return fetch(url + `/api/v3/projects/${project}/issues/${issueId}${parametize(options)}`,
+        Object.assign(
+          generateRequestParameters(token),
+          putMethod()
         )
       )
       .then(response => {
