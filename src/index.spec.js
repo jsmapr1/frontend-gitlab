@@ -1,8 +1,8 @@
 import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
-import {parametize, gitlab} from '../../src/index';
-import {getIssues} from '../../src/requests/Issues';
+import {parametize, gitlab} from './index';
+import {getIssues} from './requests/Issues';
 
 describe('main', () => {
   const issue =  {
