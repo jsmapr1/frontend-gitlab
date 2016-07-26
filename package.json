@@ -4,7 +4,7 @@
   "description": "GitLab api node module that does not require server-side dependencies.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha test/**/*-test.js --compilers js:babel-core/register",
+    "test": "mocha src --compilers js:babel-core/register",
     "build": "babel src -d ./",
     "prepublish": "npm run build"
   },
