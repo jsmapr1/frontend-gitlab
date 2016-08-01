@@ -2,8 +2,9 @@ import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
 import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
+import {request} from './Custom';
 
-describe('Issues Requests', () => {
+describe('Custom Request', () => {
   const issue =  {
     "id": 0,
     "iid": 0,
@@ -122,24 +123,26 @@ describe('Issues Requests', () => {
     nock.cleanAll()
   });
 
-  it('will return issues', () => {
-    return getIssues({url:'http://foo.gitlab.com', token:'abc123'})().then(json => {
+  it('will return issues with custom', () => {
+    return request({url:'http://foo.gitlab.com', token:'abc123'})('issues', {}).then(json => {
       expect(json).toEqual([issue, issue2])
     });
   })
 
   it('can take authentication separate', () => {
-    const issues = getIssues({url:'http://foo.gitlab.com', token:'abc123'});
-    return issues().then(json => {
+    const issues = request({url:'http://foo.gitlab.com', token:'abc123'});
+    return issues('issues', {}).then(json => {
       expect(json).toEqual([issue, issue2])
     });
   })
 
 
   it('can return issues for a project', () => {
-    let projectIssues = getProjectIssues({url:'http://foo.gitlab.com', token:'abc123'});
-    return projectIssues(0, {
-      'state':'closed'
+    let projectIssues = request({url:'http://foo.gitlab.com', token:'abc123'});
+    return projectIssues('projects/0/issues', {
+      params: {
+        'state':'closed'
+      }
     })
     .then(json => {
       expect(json).toEqual([issue2])
@@ -147,11 +150,16 @@ describe('Issues Requests', () => {
   })
 
   it('can post a new issue', () => {
-    const issues = postProjectIssue({url:'http://foo.gitlab.com', token:'abc123'});
-    return issues(0, {
-      title: 'New Issue',
-      labels: 'iteration-1',
-      assignee_id: 1
+    const issues = request({url:'http://foo.gitlab.com', token:'abc123'});
+    return issues('projects/0/issues', {
+      requestType: {
+        method: "POST"
+      },
+      params: {
+        title: 'New Issue',
+        labels: 'iteration-1',
+        assignee_id: 1
+      }
     }).then(json => {
       expect(json).toEqual(newIssueResponse);
     })
@@ -159,9 +167,14 @@ describe('Issues Requests', () => {
 
 
   it('can edit an existing issue', () => {
-    const issues = editProjectIssue({url:'http://foo.gitlab.com', token:'abc123'});
-    return issues(0, 5, {
-      state_event: 'close'
+    const issues = request({url:'http://foo.gitlab.com', token:'abc123'});
+    return issues('projects/0/issues/5', {
+      requestType: {
+        method: "PUT"
+      },
+      params: {
+        state_event: 'close'
+      }
     }).then(json => {
       expect(json).toEqual(editIssueResponse);
     })

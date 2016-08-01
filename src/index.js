@@ -15,4 +15,12 @@ export const parametize = (options) => {
     }).join('&');
 }
 
+export const generateRequestParameters = (token) => {
+  return {headers: new Headers({'PRIVATE-TOKEN': token})}
+};
+
+export const validate = (url,token) => {
+  if(!token || !url) throw new Error("Please include Token");
+}
+
 export default gitlab;

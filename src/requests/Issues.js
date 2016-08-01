@@ -1,23 +1,11 @@
-import {parametize} from '../index'
+import {parametize, generateRequestParameters, validate} from '../index'
 
-function generateRequestParameters(token) {
-  return {headers: new Headers({'PRIVATE-TOKEN': token})}
-};
-
-function validate(url,token) {
-  if(!token || !url) throw new Error("Please include Token");
+const postRequest = {
+  method: "POST"
 }
 
-const postMethod = () => {
-  return {
-    method: "POST"
-  }
-}
-
-const putMethod = () => {
-  return {
-    method: "PUT"
-  }
+const putRequest = {
+  method: "PUT"
 }
 
 export const getIssues = ({url, token}) => {
@@ -46,7 +34,7 @@ export const postProjectIssue = ({url, token}) => {
     return fetch(url + `/api/v3/projects/${project}/issues${parametize(options)}`,
         Object.assign(
           generateRequestParameters(token),
-          postMethod()
+          postRequest
         )
       )
       .then(response => {
@@ -61,7 +49,7 @@ export const editProjectIssue = ({url, token}) => {
     return fetch(url + `/api/v3/projects/${project}/issues/${issueId}${parametize(options)}`,
         Object.assign(
           generateRequestParameters(token),
-          putMethod()
+          putRequest
         )
       )
       .then(response => {
