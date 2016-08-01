@@ -5,7 +5,9 @@ const BASE_URL = '/api/v3/'
 export const request = ({url, token}) => {
   validate(url,token);
   return (path, {requestType, params}) => {
-    return fetch(url + BASE_URL + path + parametize(params),
+    ;
+    let parametized = params && Object.keys(params).length ? parametize(params):'';
+    return fetch(url + BASE_URL + path + parametized,
       Object.assign(
         generateRequestParameters(token),
         requestType || {method:"Get"}
@@ -15,3 +17,5 @@ export const request = ({url, token}) => {
       })
   }
 }
+
+export default request;
