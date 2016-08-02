@@ -1,7 +1,7 @@
 import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
-import {getProjects} from './Projects';
+import {getProjects, getProjectMembers} from './Projects';
 
 describe('Projects request', () => {
   const project = {
@@ -21,18 +21,43 @@ describe('Projects request', () => {
     "open_issues_count":5,
   }
 
-  it('should get all issues', () => {
+  it('should get all projects', () => {
     nock('http://foo.gitlab.com/api/v3', {
         reqheaders: {
           'PRIVATE-TOKEN': 'abc123'
         }
       })
-      .persist()
       .get('/projects')
       .reply(200, [project])
-    getProjects({url:'http://foo.gitlab.com', token:'abc123'})
+
+    return getProjects({url:'http://foo.gitlab.com', token:'abc123'})
       .then(json => {
         expect(json).toEqual([project])
+      })
+  })
+
+  it('should get project members', () => {
+    const members  = [
+      {
+        "name":"jsmapr1",
+        "username":"jsmapr1",
+        "id":54,
+        "state":"active",
+        "access_level":40
+      }
+    ];
+
+    nock('http://foo.gitlab.com/api/v3', {
+        reqheaders: {
+          'PRIVATE-TOKEN': 'abc123'
+        }
+      })
+      .get('/projects/10/members')
+      .reply(200, members)
+
+    return getProjectMembers({url:'http://foo.gitlab.com', token:'abc123'})(10)
+      .then(json => {
+        expect(json).toEqual(members)
       })
   })
 })
