@@ -3,6 +3,7 @@ import nock from 'nock';
 import fetch from 'isomorphic-fetch';
 import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
 import {request} from './Custom';
+import {gitlab} from '../index'
 
 describe('Custom Request', () => {
   const issue =  {
@@ -115,6 +116,7 @@ describe('Custom Request', () => {
           'PRIVATE-TOKEN': 'abc123'
         }
       })
+      .persist()
       .put('/projects/0/issues/5?state_event=close')
       .reply(201, editIssueResponse)
   });
@@ -169,6 +171,20 @@ describe('Custom Request', () => {
   it('can edit an existing issue', () => {
     const issues = request({url:'http://foo.gitlab.com', token:'abc123'});
     return issues('projects/0/issues/5', {
+      requestType: {
+        method: "PUT"
+      },
+      params: {
+        state_event: 'close'
+      }
+    }).then(json => {
+      expect(json).toEqual(editIssueResponse);
+    })
+  })
+
+  it('can use stored credentials', () => {
+    const creds = gitlab({url:'http://foo.gitlab.com', token:'abc123'})
+    return creds(request, 'projects/0/issues/5', {
       requestType: {
         method: "PUT"
       },

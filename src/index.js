@@ -2,7 +2,9 @@ import fnargs from 'fn-args';
 
 export const gitlab = (auth) => {
     return function(request) {
-      return request.call(this,auth)();
+      const args = [...arguments];
+      const funcArgs = args.slice(1);
+      return args[0].call(this,auth)(...funcArgs);
     }
 }
 

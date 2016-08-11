@@ -2,7 +2,7 @@ import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
 import {parametize, gitlab} from './index';
-import {getIssues} from './requests/Issues';
+import {getIssues, getProjectIssues} from './requests/Issues';
 
 describe('main', () => {
   const issue =  {
@@ -48,6 +48,23 @@ describe('main', () => {
       expect(json).toEqual([issue])
     });
   })
+
+  it('will call other functions with arguments', () => {
+    nock('http://foo.gitlab.com/api/v3', {
+        reqheaders: {
+          'PRIVATE-TOKEN': 'abc123'
+        }
+      })
+      .get('/projects/0/issues?state=open')
+      .reply(200, [issue])
+    const creds = gitlab({url:'http://foo.gitlab.com', token:'abc123'})
+    return creds(getProjectIssues, 0, {
+          'state':'open'
+        }).then(json => {
+      expect(json).toEqual([issue])
+    })
+  })
+
 })
 
 describe('utility functions', () => {
