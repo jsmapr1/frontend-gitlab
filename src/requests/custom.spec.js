@@ -1,8 +1,8 @@
 import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
-import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
-import {request} from './Custom';
+import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './issues';
+import {request} from './custom';
 import {gitlab} from '../index'
 
 describe('Custom Request', () => {
