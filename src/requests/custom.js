@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import {parametize, generateRequestParameters, validate} from '../index'
 
 const BASE_URL = '/api/v3/'
