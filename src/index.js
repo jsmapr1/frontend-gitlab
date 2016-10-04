@@ -1,3 +1,4 @@
+import 'isomorphic-fetch';
 import fnargs from 'fn-args';
 
 export const gitlab = (auth) => {
