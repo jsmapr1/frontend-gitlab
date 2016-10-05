@@ -1,7 +1,7 @@
 import expect from 'expect';
 import nock from 'nock';
 import fetch from 'isomorphic-fetch';
-import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
+import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './issues';
 
 describe('Issues Requests', () => {
   const issue =  {
