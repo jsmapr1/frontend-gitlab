@@ -4,7 +4,7 @@ import fetch from 'isomorphic-fetch';
 import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
 import {request} from './Custom';
 
-describe('issues', () => {
+describe('Custom Request', () => {
   const issue =  {
     "id": 0,
     "iid": 0,

@@ -3,7 +3,7 @@ import nock from 'nock';
 import fetch from 'isomorphic-fetch';
 import {getIssues, getProjectIssues, postProjectIssue, editProjectIssue} from './Issues';
 
-describe('issues', () => {
+describe('Issues Requests', () => {
   const issue =  {
     "id": 0,
     "iid": 0,
