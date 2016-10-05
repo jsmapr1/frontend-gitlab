@@ -53,7 +53,7 @@ Just get the [path](https://github.com/gitlabhq/gitlabhq/tree/master/doc/api) fo
 and then an object for the parameters.
 
 ```javascript
-import request from 'frontend-gitlab';
+import {request} from 'frontend-gitlab/requests/custom'
 const requester = request({url:'http://foo.gitlab.com', token:'abc123'});
 
 // Default request type is GET
@@ -62,6 +62,11 @@ requester('projects/0/issues', {
         'state':'closed'
     }
 })
+
+// Omit the options object if a simple git request:
+fetchContributors = (projectNumber) => {
+  return requester(`/projects/${projectNumber}/repository/contributors`)
+}
 
 // POST or any other method can be specified
 requester('projects/0/issues', {
